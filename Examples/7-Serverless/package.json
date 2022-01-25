@@ -1,0 +1,29 @@
+{
+  "name": "e30hms-backend",
+  "version": "1.0.0",
+  "description": "Backend til E30 HMS bachelor project",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@types/uuid": "^3.4.5",
+    "aws-sdk": "^2.521.0",
+    "serverless-aws-documentation": "^1.1.0",
+    "serverless-reqvalidator-plugin": "^1.0.3",
+    "source-map-support": "^0.5.10",
+    "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "@types/aws-iot-device-sdk": "^2.2.0",
+    "@types/aws-lambda": "^8.10.17",
+    "@types/node": "^10.12.18",
+    "serverless-offline": "^5.10.1",
+    "serverless-webpack": "^5.2.0",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.6.2",
+    "webpack": "^4.29.0"
+  },
+  "author": "E30HMS",
+  "license": "MIT"
+}

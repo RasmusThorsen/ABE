@@ -1,0 +1,463 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "SWTABE Assignment 1 - Reservation system",
+    "description": "**API for managing a hotel**\n\n Jakob Dybdahl Andersen - 201607803 \n\n Alexander Mølsted Rasmussen - 201607814\n\n Rasmus Østergaard Thorsen - 201608891"
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/api/user": {
+      "post": {
+        "summary": "Creates a user",
+        "tags": [
+          {
+            "name": "User"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "409": {
+            "description": "Conflict - User already exist"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "description": "User object that needs to be added to be able to create a user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/User"
+              },
+              "example": { "email": "manager@test.dk", "password": "1234" }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/{userId}": {
+      "put": {
+        "summary": "Updates the users email or role",
+        "tags": [
+          {
+            "name": "User"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User updated"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "description": "Id of user to update",
+            "name": "userId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "UserRole object that needs to be added to be able to update the user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/UserRole"
+              },
+              "example": { "email": "manager@test.dk", "role": "HotelManager" }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/authenticate": {
+      "summary": "Authenticate the user",
+      "post": {
+        "tags": [
+          {
+            "name": "User"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User authenticated"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "description": "User object that needs to be added to authenticate the user and provides a JWT",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/User"
+              },
+              "example": { "email": "manager@test.dk", "password": "1234" }
+            }
+          }
+        }
+      }
+    },
+    "/api/hotels": {
+      "get": {
+        "summary": "Gives you all the hotels in the system",
+        "tags": [
+          {
+            "name": "Hotel"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Hotels"
+          },
+          "204": {
+            "description": "No hotels"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a Hotel",
+        "tags": [
+          {
+            "name": "Hotel"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Hotel created"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "description": "Hotel object that needs to be added to be able to create a hotel",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/Hotel"
+              },
+              "example": { "name": "Hotel Diamante", "country": "Spain", "city": "Calpe", "stars": 4.3 }
+            }
+          }
+        }
+      }
+    },
+    "/api/hotels/{hotelId}/available-rooms": {
+      "post": {
+        "summary": "Search for available rooms on a given hotel",
+        "tags": [
+          {
+            "name": "Hotel"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Availalbe rooms"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Hotel not found"
+          }
+        },
+        "parameters": [
+          {
+            "name": "hotelId",
+            "in": "path",
+            "description": "Hotel id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "description": "The date to check for available rooms",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/hotels/{hotelId}": {
+      "delete": {
+        "summary": "Remove hotel",
+        "tags": [
+          {
+            "name": "Hotel"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Hotel deleted"
+          },
+          "400": {
+            "description": "Bad request - No hotel Id receive"
+          },
+          "403": {
+            "description": "Forbidden - no permission to delete hotel"
+          },
+          "404": {
+            "description": "Not found - Hotel not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "description": "Hotel Id of the hotel to delete",
+            "name": "hotelId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/hotels/{hotelId}/rooms": {
+      "post": {
+        "summary": "Add new room to hotel",
+        "tags": [
+          {
+            "name": "Room"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "hotelId",
+            "in": "path",
+            "description": "Hotel id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Room object to add to the hotel for the hotel to have rooms",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/AddRoom"
+              },
+              "example": { "number": "A201", "size": "2 beds, 4 people" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Room added"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get rooms at hotel",
+        "tags": [
+          {
+            "name": "Room"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "hotelId",
+            "in": "path",
+            "description": "Hotel id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Hotel rooms"
+          },
+          "404": {
+            "description": "Hotel not found"
+          }
+        }
+      }
+    },
+    "/api/hotels/{hotelId}/rooms/{roomId}/reservations": {
+      "post": {
+        "summary": "Make reservation on room",
+        "tags": [
+          {
+            "name": "Reservation"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "hotelId",
+            "in": "path",
+            "description": "Hotel id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "roomId",
+            "in": "path",
+            "description": "Room id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Reservation object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/CreateReservation"
+              },
+              "example": { "date": "03-03-2021" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reservation successfully made"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "UserRole": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        }
+      }
+    },
+    "Hotel": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "stars": {
+          "type": "number"
+        }
+      }
+    },
+    "AddRoom": {
+      "type": "object",
+      "properties": {
+        "number": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string"
+        }
+      }
+    },
+    "CreateReservation": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

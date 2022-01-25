@@ -1,0 +1,71 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/rot/Documents/ABE Eksempler/6-IdentityServer/Client/Client.csproj": {}
+  },
+  "projects": {
+    "/Users/rot/Documents/ABE Eksempler/6-IdentityServer/Client/Client.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/rot/Documents/ABE Eksempler/6-IdentityServer/Client/Client.csproj",
+        "projectName": "Client",
+        "projectPath": "/Users/rot/Documents/ABE Eksempler/6-IdentityServer/Client/Client.csproj",
+        "packagesPath": "/Users/rot/.nuget/packages/",
+        "outputPath": "/Users/rot/Documents/ABE Eksempler/6-IdentityServer/Client/obj/",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "/Users/rot/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "IdentityModel": {
+              "target": "Package",
+              "version": "[5.1.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.102/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

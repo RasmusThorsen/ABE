@@ -1,0 +1,93 @@
+models:
+  createDto:
+    name: "CreateDeviceDTO"
+    description: "Model used for creating new devices"
+    contentType: "application/json"
+    schema: ${file(schema/createDeviceDto.schema.json)}
+  createResponse:
+    name: "createDeviceResponse"
+    description: "Model used for response when creating new device"
+    contentType: "application/json"
+    schema: ${file(schema/createDeviceResponse.schema.json)}
+  getResponse:
+    name: "getDeviceResponse"
+    description: "Model used for response when getting a device by id"
+    contentType: "application/json"
+    schema: ${file(schema/device.schema.json)}
+
+endpoints:
+  getById:
+    summary: "Get device by ID"
+    description: "Gets the requested device by its ID"
+    requestHeaders:
+      -
+        name: "Authorization"
+        description: "Valid access-token"
+    pathParams:
+      -
+        name: "id"
+        description: "ID of the requested device"
+    methodResponses:
+      -
+        statusCode: 200
+        responseModels: 
+          application/json: "getDeviceResponse"
+  
+  getDevices:
+    summary: "Get all devices"
+    description: "Gets all devices to the connected user"
+    requestHeaders:
+      -
+        name: "Authorization"
+        description: "Valid access-token"
+    methodResponses:
+      -
+        statusCode: 200
+        responseModels: 
+          application/json: "getDeviceResponse"
+
+
+  createDevice:
+    summary: "Create a new device"
+    description: "Creates the device by creating a new thing on AWS and assigned policies and certificates."
+    requestBody:
+      description: "Body used to create the device"
+    requestModels:
+      application/json: "CreateDeviceDTO"
+    requestHeaders:
+      -
+        name: "Authorization"
+        description: "Valid access-token"
+    methodResponses:
+      -
+        statusCode: 201
+        responseModels: 
+          application/json: "createDeviceResponse"
+
+  putDevice:
+    summary: "Edit a device"
+    description: "Edits an existing device by its ID"
+    pathParams: 
+      -
+        name: "id"
+        description: "ID of the requested device"
+    requestBody:
+      description: "Body used to update device. Same as createDevice body."
+    requestModels:
+      application/json: "CreateDeviceDTO"
+    methodResponses:
+      -
+        statusCode: 204
+
+  
+  deleteDevice:
+    summary: "Delete device"
+    description: "Deletes a device by ID"
+    pathParams:
+      -
+        name: "id"
+        description: "ID of the requested device"
+    methodResponses:
+      -
+        statusCode: 204
+  

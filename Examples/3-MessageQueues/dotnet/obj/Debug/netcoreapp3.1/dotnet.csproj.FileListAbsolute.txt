@@ -1,0 +1,13 @@
+/Users/rot/Documents/ABE Eksempler/3-MessageQueues/dotnet/bin/Debug/netcoreapp3.1/dotnet.deps.json
+/Users/rot/Documents/ABE Eksempler/3-MessageQueues/dotnet/bin/Debug/netcoreapp3.1/dotnet.runtimeconfig.json
+/Users/rot/Documents/ABE Eksempler/3-MessageQueues/dotnet/bin/Debug/netcoreapp3.1/dotnet.runtimeconfig.dev.json
+/Users/rot/Documents/ABE Eksempler/3-MessageQueues/dotnet/bin/Debug/netcoreapp3.1/dotnet.dll
+/Users/rot/Documents/ABE Eksempler/3-MessageQueues/dotnet/bin/Debug/netcoreapp3.1/dotnet.pdb
+/Users/rot/Documents/ABE Eksempler/3-MessageQueues/dotnet/bin/Debug/netcoreapp3.1/RabbitMQ.Client.dll
+/Users/rot/Documents/ABE Eksempler/3-MessageQueues/dotnet/bin/Debug/netcoreapp3.1/System.Threading.Channels.dll
+/Users/rot/Documents/ABE Eksempler/3-MessageQueues/dotnet/obj/Debug/netcoreapp3.1/dotnet.csprojAssemblyReference.cache
+/Users/rot/Documents/ABE Eksempler/3-MessageQueues/dotnet/obj/Debug/netcoreapp3.1/dotnet.AssemblyInfoInputs.cache
+/Users/rot/Documents/ABE Eksempler/3-MessageQueues/dotnet/obj/Debug/netcoreapp3.1/dotnet.AssemblyInfo.cs
+/Users/rot/Documents/ABE Eksempler/3-MessageQueues/dotnet/obj/Debug/netcoreapp3.1/dotnet.csproj.CopyComplete
+/Users/rot/Documents/ABE Eksempler/3-MessageQueues/dotnet/obj/Debug/netcoreapp3.1/dotnet.dll
+/Users/rot/Documents/ABE Eksempler/3-MessageQueues/dotnet/obj/Debug/netcoreapp3.1/dotnet.pdb

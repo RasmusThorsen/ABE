@@ -1,0 +1,131 @@
+service:
+  name: dashboard-service
+
+custom:
+  tableName: "dashboard-table"
+  corsSetting: 
+    origin: '*'
+    headers:
+      - Content-Type
+      - X-Amz-Date
+      - Authorization
+      - X-Api-Key
+      - X-Amz-Security-Token
+      - X-Amz-User-Agent
+      - Identity-Id
+
+plugins:
+  - serverless-reqvalidator-plugin
+  - serverless-aws-documentation
+  - serverless-webpack
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  region: eu-central-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - { "Fn::GetAtt": ["DashboardDynamoDBTable", "Arn"] }
+
+  environment:
+    DASHBOARD_TABLE: ${self:custom.tableName}
+
+functions:
+  getDashboard:
+    handler: get.get
+    events:
+      - http:
+          method: get
+          path: dashboard
+          reqValidatorName: HeaderValidator
+          cors: ${self:custom.corsSetting}
+          authorizer:
+            name: cognito-authorizer
+            arn: arn:aws:cognito-idp:eu-central-1:059399871100:userpool/eu-central-1_8MjsaiF5t
+            scopes:
+              - aws.cognito.signin.user.admin
+
+  addWidget:
+    handler: addWidget.addWidget
+    events:
+      - http:
+          method: post
+          path: dashboard/widget
+          reqValidatorName: HeaderValidator
+          cors: ${self:custom.corsSetting}
+          authorizer:
+            name: cognito-authorizer
+            arn: arn:aws:cognito-idp:eu-central-1:059399871100:userpool/eu-central-1_8MjsaiF5t
+            scopes:
+              - aws.cognito.signin.user.admin
+
+  putWidget:
+      handler: putWidget.putWidget
+      events:
+        - http:
+            method: put
+            path: dashboard/widget/{id}
+            reqValidatorName: HeaderValidator
+            cors: ${self:custom.corsSetting}
+            authorizer:
+              name: cognito-authorizer
+              arn: arn:aws:cognito-idp:eu-central-1:059399871100:userpool/eu-central-1_8MjsaiF5t
+              scopes:
+                - aws.cognito.signin.user.admin
+
+  deleteWidget:
+      handler: deleteWidget.deleteWidget
+      events:
+        - http:
+            method: delete
+            path: dashboard/widget/{id}
+            reqValidatorName: HeaderValidator
+            cors: ${self:custom.corsSetting}
+            authorizer:
+              name: cognito-authorizer
+              arn: arn:aws:cognito-idp:eu-central-1:059399871100:userpool/eu-central-1_8MjsaiF5t
+              scopes:
+                - aws.cognito.signin.user.admin
+  
+
+resources:
+  Resources:
+    DashboardDynamoDBTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.tableName}
+    HeaderValidator:
+      Type: "AWS::ApiGateway::RequestValidator"
+      Properties:
+        Name: "headerValidator"
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: false
+        ValidateRequestParameters: true
+    GatewayResponseDefault4XX:
+      Type: "AWS::ApiGateway::GatewayResponse"
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: ApiGatewayRestApi

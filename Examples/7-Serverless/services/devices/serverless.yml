@@ -1,0 +1,194 @@
+service:
+  name: device-service
+
+custom:
+  tableName: "devices-table"
+  corsSetting: 
+    origin: '*'
+    headers:
+      - Content-Type
+      - X-Amz-Date
+      - Authorization
+      - X-Api-Key
+      - X-Amz-Security-Token
+      - X-Amz-User-Agent
+      - Identity-Id  
+
+  documentation:
+    info:
+      title: "Devices API"
+      version: "1.1.0"
+      description: "API description for CRUD operations on devices"
+    models:
+      - ${file(serverless.doc.yml):models.createDto}
+      - ${file(serverless.doc.yml):models.createResponse}
+      - ${file(serverless.doc.yml):models.getResponse}
+
+plugins:
+  - serverless-reqvalidator-plugin
+  - serverless-aws-documentation
+  - serverless-webpack
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  region: eu-central-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action: '*'
+        # - dynamodb:Query
+        # - dynamodb:Scan
+        # - dynamodb:GetItem
+        # - dynamodb:PutItem
+        # - dynamodb:UpdateItem
+        # - dynamodb:DeleteItem
+      Resource:
+        - { "Fn::GetAtt": ["DevicesDynamoDBTable", "Arn"] }
+        - arn:aws:dynamodb:eu-central-1:059399871100:table/peripheral-table
+        - '*'
+
+  environment:
+    DEVICE_TABLE: ${self:custom.tableName}
+
+functions:
+  getDeviceById:
+    handler: getById.getById
+    events:
+      - http:
+          method: get
+          documentation: ${file(serverless.doc.yml):endpoints.getById}
+          path: devices/{id}
+          cors: ${self:custom.corsSetting}
+          reqValidatorName: HeaderValidator
+          authorizer:
+            name: cognito-authorizer
+            arn: arn:aws:cognito-idp:eu-central-1:059399871100:userpool/eu-central-1_8MjsaiF5t
+            scopes:
+              - aws.cognito.signin.user.admin
+
+  getDevices:
+    handler: getList.getList
+    events:
+      - http:
+          method: get
+          documentation: ${file(serverless.doc.yml):endpoints.getDevices}
+          path: devices
+          reqValidatorName: HeaderValidator
+          cors: ${self:custom.corsSetting}
+          authorizer:
+            name: cognito-authorizer
+            arn: arn:aws:cognito-idp:eu-central-1:059399871100:userpool/eu-central-1_8MjsaiF5t
+            scopes:
+              - aws.cognito.signin.user.admin
+
+  getValues:
+    handler: getValues.getValues
+    events:
+      - http:
+          method: get
+          path: devices/{id}/values
+          reqValidatorName: HeaderValidator
+          cors: ${self:custom.corsSetting}
+          authorizer:
+            name: cognito-authorizer
+            arn: arn:aws:cognito-idp:eu-central-1:059399871100:userpool/eu-central-1_8MjsaiF5t
+            scopes:
+              - aws.cognito.signin.user.admin
+
+  createDevice:
+    handler: create.createDevice
+    events:
+      - http:
+          method: post
+          path: devices
+          reqValidatorName: HeaderValidator
+          cors: ${self:custom.corsSetting}
+          documentation: ${file(serverless.doc.yml):endpoints.createDevice}
+          authorizer:
+            name: cognito-authorizer
+            arn: arn:aws:cognito-idp:eu-central-1:059399871100:userpool/eu-central-1_8MjsaiF5t
+            scopes:
+              - aws.cognito.signin.user.admin
+
+  putDevice:
+    handler: put.putDevice
+    events:
+      - http:
+          method: put
+          documentation: ${file(serverless.doc.yml):endpoints.putDevice}
+          path: devices/{id}
+          reqValidatorName: HeaderValidator
+          cors: ${self:custom.corsSetting}
+          authorizer:
+            name: cognito-authorizer
+            arn: arn:aws:cognito-idp:eu-central-1:059399871100:userpool/eu-central-1_8MjsaiF5t
+            scopes:
+              - aws.cognito.signin.user.admin
+
+  deleteDevice:
+    handler: delete.deleteDevice
+    events:
+      - http:
+          method: delete
+          documentation: ${file(serverless.doc.yml):endpoints.deleteDevice}
+          path: devices/{id}
+          reqValidatorName: HeaderValidator
+          cors: ${self:custom.corsSetting}
+          authorizer:
+            name: cognito-authorizer
+            arn: arn:aws:cognito-idp:eu-central-1:059399871100:userpool/eu-central-1_8MjsaiF5t
+            scopes:
+              - aws.cognito.signin.user.admin
+  
+  saveValueToDb:
+    handler: saveValue.save
+
+resources:
+  Resources:
+    DevicesDynamoDBTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: manufactorer
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+          - AttributeName: id
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+        TableName: ${self:custom.tableName}
+        GlobalSecondaryIndexes:
+          - IndexName: manufactorerIndex
+            KeySchema:
+              - AttributeName: manufactorer
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+    HeaderValidator:
+      Type: "AWS::ApiGateway::RequestValidator"
+      Properties:
+        Name: "headerValidator"
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: false
+        ValidateRequestParameters: true
+    GatewayResponseDefault4XX:
+      Type: "AWS::ApiGateway::GatewayResponse"
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: ApiGatewayRestApi

@@ -1,0 +1,15 @@
+/Users/rot/Documents/ABE Eksempler/6-IdentityServer/Client/obj/Debug/netcoreapp3.1/Client.csprojAssemblyReference.cache
+/Users/rot/Documents/ABE Eksempler/6-IdentityServer/Client/obj/Debug/netcoreapp3.1/Client.AssemblyInfoInputs.cache
+/Users/rot/Documents/ABE Eksempler/6-IdentityServer/Client/obj/Debug/netcoreapp3.1/Client.AssemblyInfo.cs
+/Users/rot/Documents/ABE Eksempler/6-IdentityServer/Client/bin/Debug/netcoreapp3.1/Client.deps.json
+/Users/rot/Documents/ABE Eksempler/6-IdentityServer/Client/bin/Debug/netcoreapp3.1/Client.runtimeconfig.json
+/Users/rot/Documents/ABE Eksempler/6-IdentityServer/Client/bin/Debug/netcoreapp3.1/Client.runtimeconfig.dev.json
+/Users/rot/Documents/ABE Eksempler/6-IdentityServer/Client/bin/Debug/netcoreapp3.1/Client.dll
+/Users/rot/Documents/ABE Eksempler/6-IdentityServer/Client/bin/Debug/netcoreapp3.1/Client.pdb
+/Users/rot/Documents/ABE Eksempler/6-IdentityServer/Client/bin/Debug/netcoreapp3.1/IdentityModel.dll
+/Users/rot/Documents/ABE Eksempler/6-IdentityServer/Client/bin/Debug/netcoreapp3.1/Newtonsoft.Json.dll
+/Users/rot/Documents/ABE Eksempler/6-IdentityServer/Client/bin/Debug/netcoreapp3.1/System.Text.Encodings.Web.dll
+/Users/rot/Documents/ABE Eksempler/6-IdentityServer/Client/bin/Debug/netcoreapp3.1/System.Text.Json.dll
+/Users/rot/Documents/ABE Eksempler/6-IdentityServer/Client/obj/Debug/netcoreapp3.1/Client.csproj.CopyComplete
+/Users/rot/Documents/ABE Eksempler/6-IdentityServer/Client/obj/Debug/netcoreapp3.1/Client.dll
+/Users/rot/Documents/ABE Eksempler/6-IdentityServer/Client/obj/Debug/netcoreapp3.1/Client.pdb
